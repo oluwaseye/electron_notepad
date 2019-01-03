@@ -1,5 +1,6 @@
 const { app, BrowserWindow, Menu } = require('electron')
-
+// Enable live reload for all the files inside your project directory
+require('electron-reload')(__dirname);
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 
@@ -14,7 +15,7 @@ const template = [
       { label: 'Page Setup...' },
       { label: 'Print' },
       { label: 'Exit' }
-    ]
+    ] 
   },
   {
     label: 'Edit',
