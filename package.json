@@ -1,0 +1,23 @@
+{
+  "name": "electron-notepad",
+  "version": "0.1.0",
+  "description": "A Notepad clone using Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oluwaseye/electron-nodepad"
+  },
+  "keywords": [
+    "electron",
+    "javascript",
+    "jQuery"
+  ],
+  "author": "Oluwaseye Ogunkoya",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^4.0.0"
+  }
+}
