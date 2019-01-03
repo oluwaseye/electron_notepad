@@ -4,9 +4,11 @@
   "description": "A Notepad clone using Electron",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package": "asar pack electron-notepad-linux-x64/resources/app electron-notepad-linux-x64/resources/app.asar",
+    "build": "electron-packager . electron-notepad --ignore=node_modules/electron-* --platform=linux --arch=x64 --version=0.37.8"
   },
-    "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/oluwaseye/electron-nodepad"
   },
@@ -19,5 +21,9 @@
   "license": "MIT",
   "devDependencies": {
     "electron": "^4.0.0"
+  },
+  "dependencies": {
+    "electron-reload": "^1.4.0",
+    "quill": "^0.20.1"
   }
 }
