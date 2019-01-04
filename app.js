@@ -1,13 +1,10 @@
 var Quill = require('quill')
-var editor = new Quill('#editor', {
-  modules: {
-    toolbar: { container: '#toolbar' },
-    'image-tooltip': true,
-    'link-tooltip': true
-  },
+var container = document.getElementById('editor');
+var options = {
   theme: 'snow'
+};
 
-});
+ var editor = new Quill('#editor', options);
 
 // Save and Load files
 
