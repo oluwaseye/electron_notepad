@@ -1,20 +1,52 @@
-const { app, BrowserWindow, Menu } = require('electron')
-const ipc = require('electron').ipcRenderer
-// Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname);
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
+const fs = require('fs');
 
-const template = [
+require('electron-reload')(__dirname);
+
+
+
+
+
+
+
+
+let mainWindow
+
+function createWindow () {
+  // Create the browser window.
+  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+
+  // and load the index.html of the app.
+  mainWindow.loadFile('index.html')
+
+   
+     
+    
+
+  // Emitted when the window is closed.
+  mainWindow.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWindow = null
+  })
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', function(){
+
+  createWindow()
+  const template = [
   {
     label: 'File',
     submenu: [
       { label: 'New' },
       { label: 'Open...' },
-      { label: 'Save' , 
-                click() { 
-                   saveFile() 
-                } 
+      { label: "Save", accelerator: "CmdOrCtrl+S", selector: "save:", click: function() {
+                      saveFile('hello');
+                  } 
       },
       { label: 'Print' },
       { label: 'Exit', 
@@ -60,92 +92,9 @@ const template = [
   }
 ]
 
-
-
 const menu = Menu.buildFromTemplate(template)
-Menu.setApplicationMenu(menu)
-
-var fs = require('fs');
-var remote = require('electron').remote;
-var dialog = remote.require('electron').dialog;
-
-var loadedfs;
-
-function saveFile() {
-  if (!loadedfs) {
-    dialog.showSaveDialog({
-      filters: [
-        { name: 'txt', extensions: ['txt'] },
-        { name: 'html', extensions: ['html'] },
-      ]
-    }, function (filename) {
-      if (filename === undefined) return;
-      writeToFile(editor, filename);
-    });
-  }
-  else {
-    writeToFile(editor, loadedfs);
-  }
-}
-
-function loadFile() {
-  dialog.showOpenDialog({
-    filters: [
-      { name: 'txt', extensions: ['txt', 'html'] },
-      { name: 'html', extensions: ['html', 'txt'] },
-    ]
-  }, function (filenames) {
-    if (filenames === undefined) return;
-    var filename = filenames[0];
-    readFromFile(editor, filename);
-    loadedfs = filename;
-  })
-}
-
-function writeToFile(editor, filename) {
-  var html = editor.getHTML();
-  fs.writeFile(filename, html, function (err) {
-    if (err) {
-      return console.log(err);
-    }
-  });
-}
-
-function readFromFile(editor, filename) {
-  fs.readFile(filename, "utf-8", function (err, data) {
-    if (err) {
-      console.log(err);
-    }
-    editor.setHTML(data);
-  });
-}
-
-let win
-
-function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600 })
-
-  // and load the index.html of the app.
-  win.loadFile('index.html')
-
-   
-     
-    
-
-  // Emitted when the window is closed.
-  win.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    win = null
-  })
-}
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+  Menu.setApplicationMenu(menu)
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -166,3 +115,42 @@ app.on('activate', () => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+const openFile = () => {
+  const selectedFile = dialog.showOpenDialog(mainWindow, {
+    properties: ['openFile'],
+    filters: [
+      { name: 'Text Files', extensions: ['md', 'markdown', 'txt', 'doc', 'html'] }
+    ]
+  });
+
+  if (!selectedFile) { return; }
+
+  const fileName = selectedFile[0];
+  const body = fs.readFileSync(fileName).toString();
+  const lastMod = getLastMod(fileName);
+  app.addRecentDocument(fileName);
+
+  mainWindow.webContents.send('file-opened', { fileName, body, lastMod});
+};
+
+const saveFile = (newBody) => {
+  dialog.showSaveDialog(function (newName) {
+    fs.writeFile(newName, newBody, 'utf8', (err) => {
+      if (err) { throw err };
+      dialog.showMessageBox({
+        message: "Note saved.",
+        buttons: ["Okay!"]
+      });
+    });
+    mainWindow.webContents.send('file-saved', { newName, newBody });
+  });
+};
+
+const getLastMod = (fileName) => {
+  return fs.statSync(fileName).mtime;
+};
+
+exports.openFile = openFile;
+exports.saveFile = saveFile;
+exports.getLastMod = getLastMod;
