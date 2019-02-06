@@ -112,10 +112,10 @@ function saveCurrentDoc(){
 
 function askSaveIfNeed(){
     if(isSaved) return;
-    const response=dialog.showMessageBox(remote.getCurrentWindow(), {
-        message: 'Do you want to save the current document?',
-        type: 'question',
-        buttons: [ 'Yes', 'No' ]
-    });
+    const response= dialog.showMessageBox({
+       message: 'Do you want to save the current document?',
+         type: 'question',
+         buttons: ['Yes', 'No']
+     })
     if(response==0) saveCurrentDoc(); 
 }
