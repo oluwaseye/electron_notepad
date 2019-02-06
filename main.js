@@ -1,7 +1,12 @@
-const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron')
-const fs = require('fs');
+const { app, BrowserWindow, Menu, MenuItem, ipcMain, dialog } = require('electron')
 
+const fs = require('fs');
+let menuModule = require("./menu");
 require('electron-reload')(__dirname);
+
+
+
+
 
 
 
@@ -15,7 +20,7 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 
-   
+  
      
     
 
@@ -34,61 +39,45 @@ function createWindow () {
 app.on('ready', function(){
 
   createWindow()
-  const template = [
-  {
-    label: 'File',
-    submenu: [
-      { label: 'New' },
-      { label: 'Open...' },
-      { label: "Save", accelerator: "CmdOrCtrl+S", selector: "save:", click: function() {
-                      saveFile('hello');
-                  } 
-      },
-      { label: 'Print' },
-      { label: 'Exit', 
-                click() { 
-                    app.quit() 
-                } 
-       }
-    ] 
-  },
-  {
-    label: 'Edit',
-    submenu: [
-      { role: 'Undo' },
-      { role: 'Cut' },
-      { role: 'Copy' },
-      { role: 'Paste' }
-    ]
-  }, 
-   {
-    label: 'Format',
-    submenu: [
-      { label: 'Word Wrap' },
-      { label: 'Font' }
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-    { role: 'zoomIn' },
-    { role: 'zoomOut' },
-    { role: 'resetZoom' },
-    { role: 'toggleFullScreen' },
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'About Electron Pad',
-        click () { require('electron').shell.openExternal('https://electronjs.org') }
-      }
-    ]
-  }
-]
+  
+  
 
-const menu = Menu.buildFromTemplate(template)
+const menu = Menu.buildFromTemplate(menuModule.appMenuTemplate)
+ menu.items[0].submenu.append(new MenuItem({
+   label: "New",
+   click() {
+     mainWindow.webContents.send('action', 'new'); 
+   },
+   accelerator: 'CmdOrCtrl+N' 
+ }));
+ 
+ menu.items[0].submenu.append(new MenuItem({
+   label: "Open",
+   click() {
+     mainWindow.webContents.send('action', 'open');
+   },
+   accelerator: 'CmdOrCtrl+O' 
+ }));
+ 
+ menu.items[0].submenu.append(new MenuItem({
+   label: "Save",
+   click() {
+     mainWindow.webContents.send('action', 'save'); 
+   },
+   accelerator: 'CmdOrCtrl+S' 
+ }));
+ 
+ menu.items[0].submenu.append(new MenuItem({
+   type: 'separator'
+ }));
+ 
+ menu.items[0].submenu.append(new MenuItem({
+   label: 'Exit',
+   click(){
+     app.quit()
+   }
+ }));
+
   Menu.setApplicationMenu(menu)
 })
 
@@ -108,45 +97,6 @@ app.on('activate', () => {
     createWindow()
   }
 })
-
+exports.mainWindow = mainWindow;
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-const openFile = () => {
-  const selectedFile = dialog.showOpenDialog(mainWindow, {
-    properties: ['openFile'],
-    filters: [
-      { name: 'Text Files', extensions: ['md', 'markdown', 'txt', 'doc', 'html'] }
-    ]
-  });
-
-  if (!selectedFile) { return; }
-
-  const fileName = selectedFile[0];
-  const body = fs.readFileSync(fileName).toString();
-  const lastMod = getLastMod(fileName);
-  app.addRecentDocument(fileName);
-
-  mainWindow.webContents.send('file-opened', { fileName, body, lastMod});
-};
-
-const saveFile = (newBody) => {
-  dialog.showSaveDialog(function (newName) {
-    fs.writeFile(newName, newBody, 'utf8', (err) => {
-      if (err) { throw err };
-      dialog.showMessageBox({
-        message: "Note saved.",
-        buttons: ["Okay!"]
-      });
-    });
-    mainWindow.webContents.send('file-saved', { newName, newBody });
-  });
-};
-
-const getLastMod = (fileName) => {
-  return fs.statSync(fileName).mtime;
-};
-
-exports.openFile = openFile;
-exports.saveFile = saveFile;
-exports.getLastMod = getLastMod;
