@@ -27,13 +27,13 @@ const contextMenuTemplate=[
     { role: 'selectall' }   
 ];
 const contextMenu=Menu.buildFromTemplate(contextMenuTemplate);
-txtEditor.addEventListener('contextmenu', (e)=>{
+txtEditor.children[0].addEventListener('contextmenu', (e) => {
     e.preventDefault();
     contextMenu.popup(remote.getCurrentWindow());
 });
 
 
-txtEditor.oninput=(e)=>{
+txtEditor.children[0].oninput = (e) => {
     if(isSaved) document.title += " *";
     isSaved=false;
 };
@@ -44,7 +44,7 @@ ipcRenderer.on('action', (event, arg) => {
     case 'new': 
         askSaveIfNeed();
         currentFile=null;
-        txtEditor.value='';   
+        txtEditor.children[0].innerHTML = '';
         document.title = "Notepad - Untitled";
         isSaved=true;
         break;
@@ -59,7 +59,7 @@ ipcRenderer.on('action', (event, arg) => {
         if(files){
             currentFile=files[0];
             const txtRead=readText(currentFile);
-            txtEditor.value=txtRead;
+            txtEditor.children[0].innerHTML = txtRead;
             document.title = "Notepad - " + currentFile;
             isSaved=true;
         }
@@ -102,7 +102,7 @@ function saveCurrentDoc(){
         if(file) currentFile=file;
     }
     if(currentFile){
-        const txtSave=txtEditor.innerHTML;
+        const txtSave = txtEditor.children[0].innerHTML;
         saveText(txtSave, currentFile);
         isSaved=true;
         document.title = "Notepad - " + currentFile;
