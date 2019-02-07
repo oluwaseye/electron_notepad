@@ -2,7 +2,31 @@ const { ipcRenderer, remote } =  require('electron');
 const { Menu, MenuItem, dialog } = remote;
 
 var Quill = require('quill')
+var Size = Quill.import('attributors/style/size');
+Size.whitelist = ['12px', '14px', '16px', '18px', '20px', '24px', '36px', '48px', '72px'];
+Quill.register(Size, true);
 var options = {
+    modules: {
+      syntax: true,
+      toolbar:[
+              
+      [{ 'font': [] }],
+       ['bold', 'italic', 'underline', 'strike'],
+      [{
+        'size': ['12px', '14px', '16px', '18px', '20px', '24px', '36px', '48px', '72px']
+      }],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+       ['blockquote', 'code-block', 'link'],       
+      [{ 'script': 'sub'}, { 'script': 'super' }],      
+      [{ 'indent': '-1'}, { 'indent': '+1' }],         
+      [{ 'direction': 'rtl' }],                        
+
+      [{ 'color': [] }, { 'background': [] }],   
+      [{ 'align': [] }],
+
+      ['clean']                                      
+    ]
+    },
   theme: 'snow'
 };
 
