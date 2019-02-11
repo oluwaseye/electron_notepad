@@ -5,18 +5,25 @@ var Quill = require('quill')
 var Size = Quill.import('attributors/style/size');
 Size.whitelist = ['12px', '14px', '16px', '18px', '20px', '24px', '36px', '48px', '72px'];
 Quill.register(Size, true);
+// Add fonts to whitelist
+var Font = Quill.import('formats/font');
+// We do not add Sans Serif since it is the default
+Font.whitelist = ['Arial', 'Courier', 'Times-New-Roman', 'Sans-Serif', 'Verdana', 'Lucida', 'Helvetica', 'Garmond', 'Calibri'];
+Quill.register(Font, true);
 var options = {
     modules: {
       syntax: true,
       toolbar:[
               
-      [{ 'font': [] }],
+      [{
+        'font': ['Arial', 'Courier', 'Times-New-Roman', 'Sans-Serif', 'Verdana', 'Lucida', 'Helvetica', 'Garmond', 'Calibri']
+      }],
        ['bold', 'italic', 'underline', 'strike'],
       [{
         'size': ['12px', '14px', '16px', '18px', '20px', '24px', '36px', '48px', '72px']
       }],
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-       ['blockquote', 'code-block', 'link'],       
+      ['blockquote', 'link'],       
       [{ 'script': 'sub'}, { 'script': 'super' }],      
       [{ 'indent': '-1'}, { 'indent': '+1' }],         
       [{ 'direction': 'rtl' }],                        

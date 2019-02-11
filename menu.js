@@ -29,7 +29,7 @@
                   label: 'About Notepad',
                   click() {
                     dialog.showMessageBox( {
-                      message: 'Thanks for using the app',
+                      message: 'Thanks for using the app ', 
                       type: 'info'
                     })
                   }

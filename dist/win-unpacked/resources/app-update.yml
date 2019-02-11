@@ -1,0 +1,4 @@
+owner: oluwaseye
+repo: electron-nodepad
+provider: github
+updaterCacheDirName: electron-notepad-updater

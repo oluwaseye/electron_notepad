@@ -4,19 +4,16 @@ const fs = require('fs');
 let menuModule = require("./menu");
 require('electron-reload')(__dirname);
 
-
-
-
-
-
-
-
 let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
-mainWindow.webContents.openDevTools();
+  mainWindow = new BrowserWindow({
+    width: 900,
+    height: 630,
+    icon: __dirname + '/Icons/png/64.png',
+    title: 'Electron Notepad'
+  })
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
 

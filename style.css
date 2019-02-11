@@ -55,3 +55,93 @@ html, body {
   content: '72';
   font-size: 72px !important;
 }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Arial"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Arial"]::before {
+   font-family: "Arial";
+   content: "Arial";
+ }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Courier"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Courier"]::before {
+   font-family: "Courier";
+   content: "Courier";
+ }
+ 
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Times-New-Roman"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Times-New-Roman"]::before {
+   font-family: "Times New Roman";
+   content: "Times New Roman";
+ }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Sans-Serif"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Sans-Serif"]::before {
+    font-family: "Sans Serif";
+    content: "Sans Serif";
+  }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Verdana"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Verdana"]::before {
+    font-family: "Verdana";
+    content: "Verdana";
+  }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Lucida"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Lucida"]::before {
+    font-family: "Lucida";
+    content: "Lucida";
+  }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Helvetica"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Helvetica"]::before {
+    font-family: "Helvetica";
+    content: "Helvetica";
+  }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Garmond"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Garmond"]::before {
+    font-family: "Garmond";
+    content: "Garmond";
+  }
+
+ .ql-snow .ql-picker.ql-font .ql-picker-label[data-value="Calibri"]::before,
+ .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="Calibri"]::before {
+    font-family: "Calibri";
+    content: "Calibri";
+  }
+
+  .ql-font-arial {
+    font-family: 'Arial';
+  }
+
+  .ql-font-Courier {
+    font-family: 'Courier';
+  }
+
+  .ql-font-Times-New-Roman {
+    font-family: 'Times New Roman';
+  }
+
+  .ql-font-Sans-Serif {
+    font-family: 'Sans Serif';
+  }
+
+  .ql-font-Verdana {
+    font-family: 'Verdana';
+  }
+
+  .ql-font-Lucida {
+    font-family: 'Lucida';
+  }
+
+  .ql-font-Helvetica {
+    font-family: 'Helvetica';
+  }
+
+  .ql-font-Garmond {
+    font-family: 'Garmond';
+  }
+
+  .ql-font-Calibri {
+    font-family: 'Calibri';
+  }
